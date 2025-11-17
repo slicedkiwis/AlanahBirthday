@@ -33,7 +33,9 @@ const HeartAnimation = () => {
             left: `${heart.left}%`,
             fontSize: `${heart.size}px`,
             animationDelay: `${heart.animationDelay}s`,
-            color: '#ff69b4'
+            color: '#ff69b4',
+            bottom: 0,
+            top: 'auto'
           }}
         >
           ♥

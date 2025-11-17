@@ -129,12 +129,12 @@ const MapScreen = () => {
       </div>
 
       <div style={{
-        width: '400px',
-        background: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(10px)',
+        width: '500px',
+        background: 'rgba(255, 255, 255, 0.98)',
+        backdropFilter: 'blur(20px)',
         padding: '2rem',
         overflowY: 'auto',
-        boxShadow: '-5px 0 20px rgba(0, 0, 0, 0.1)',
+        boxShadow: '-5px 0 20px rgba(0, 0, 0, 0.15)',
         zIndex: 10
       }}>
         <div style={{
@@ -172,8 +172,8 @@ const MapScreen = () => {
                 transition: 'all 0.3s ease',
                 padding: '0.5rem',
                 borderRadius: '10px',
-                background: isCompleted ? 'rgba(255, 107, 157, 0.05)' : 'transparent',
-                opacity: isCompleted ? 1 : 0.5
+                background: isCompleted ? 'rgba(255, 107, 157, 0.08)' : 'transparent',
+                opacity: isCompleted ? 1 : 0.6
               }}
               onClick={() => handleMemorySelect(memory)}
               >
@@ -184,15 +184,15 @@ const MapScreen = () => {
                   position: 'relative'
                 }}>
                   <div style={{
-                    width: '40px',
-                    height: '40px',
+                    width: '50px',
+                    height: '50px',
                     borderRadius: '50%',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                     background: isCompleted ? '#ff6b9d' : '#ccc',
                     color: 'white',
-                    fontSize: '16px',
+                    fontSize: '18px',
                     fontWeight: 'bold',
                     boxShadow: isCompleted ? '0 0 20px rgba(255, 107, 157, 0.5)' : 'none',
                     zIndex: 2,
@@ -219,8 +219,8 @@ const MapScreen = () => {
                   alignItems: 'center'
                 }}>
                   <div style={{
-                    width: '60px',
-                    height: '60px',
+                    width: '80px',
+                    height: '80px',
                     borderRadius: '10px',
                     overflow: 'hidden',
                     flexShrink: 0,
@@ -240,7 +240,7 @@ const MapScreen = () => {
 
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <h4 style={{
-                      fontSize: '1rem',
+                      fontSize: '1.1rem',
                       fontWeight: '600',
                       color: '#333',
                       marginBottom: '0.25rem',
@@ -305,13 +305,12 @@ const MapScreen = () => {
             left: '0',
             width: '100%',
             height: '100vh',
-            background: 'rgba(0, 0, 0, 0.7)',
-            backdropFilter: 'blur(5px)',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             zIndex: 1000,
-            padding: '1rem'
+            padding: '1rem',
+            pointerEvents: 'none'
           }}>
             <div style={{
               background: 'white',
@@ -322,7 +321,9 @@ const MapScreen = () => {
               overflow: 'hidden',
               position: 'relative',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-              borderTop: '5px solid #ff6b9d'
+              borderTop: '5px solid #ff6b9d',
+              pointerEvents: 'auto',
+              animation: 'slideIn 0.3s ease-out'
             }}>
               <div style={{
                 position: 'relative',
