@@ -9,7 +9,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router basename="/alanahbirthday">
+    <Router basename="/AlanahBirthday">
       <div className="App">
         <HeartAnimation />
         <Routes>
