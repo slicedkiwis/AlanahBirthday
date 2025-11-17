@@ -38,10 +38,10 @@ const MapScreen = () => {
   };
 
   useEffect(() => {
-    if (window.google && mapRef.current && memories.length > 0) {
+    if (window.google && mapRef.current && memories.length > 0 && !map) {
       const mapInstance = new window.google.maps.Map(mapRef.current, {
-        center: { lat: 25.7617, lng: -80.1918 },
-        zoom: 10,
+        center: memories[0].location,
+        zoom: 8,
         styles: [
           {
             featureType: 'landscape.natural',
@@ -98,7 +98,7 @@ const MapScreen = () => {
 
       setMap(mapInstance);
     }
-  }, [memories, completedMemories]);
+  }, [memories, map]);
 
   useEffect(() => {
     if (completedMemories.length === memories.length && memories.length > 0) {
