@@ -1,25 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import WelcomeScreen from './components/WelcomeScreen';
-import MapScreen from './components/MapScreen';
-import SummaryScreen from './components/SummaryScreen';
-import FinalScreen from './components/FinalScreen';
 import HeartAnimation from './components/HeartAnimation';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingSpinner from './components/LoadingSpinner';
 import './App.css';
+
+const WelcomeScreen = React.lazy(() => import('./components/WelcomeScreen'));
+const MapScreen = React.lazy(() => import('./components/MapScreen'));
+const SummaryScreen = React.lazy(() => import('./components/SummaryScreen'));
+const FinalScreen = React.lazy(() => import('./components/FinalScreen'));
 
 function App() {
   return (
-    <Router basename="/AlanahBirthday">
-      <div className="App">
-        <HeartAnimation />
-        <Routes>
-          <Route path="/" element={<WelcomeScreen />} />
-          <Route path="/map" element={<MapScreen />} />
-          <Route path="/summary" element={<SummaryScreen />} />
-          <Route path="/final" element={<FinalScreen />} />
-        </Routes>
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <div className="App">
+          <HeartAnimation />
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<WelcomeScreen />} />
+              <Route path="/map" element={<MapScreen />} />
+              <Route path="/summary" element={<SummaryScreen />} />
+              <Route path="/final" element={<FinalScreen />} />
+            </Routes>
+          </Suspense>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

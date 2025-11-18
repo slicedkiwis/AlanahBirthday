@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { imageLocations } from '../utils/imageMetadata';
 import MusicPlayer from './MusicPlayer';
+import LazyImage from './LazyImage';
 
 const SummaryScreen = () => {
   const navigate = useNavigate();
@@ -26,7 +27,9 @@ const SummaryScreen = () => {
           marginBottom: '40px',
           marginTop: '30px'
         }}>
-        {imageLocations.map((location, index) => (
+        {imageLocations
+          .sort((a, b) => new Date(a.date) - new Date(b.date))
+          .map((location, index) => (
           <div key={index} 
             onClick={() => setSelectedMemory(location)}
             style={{
@@ -57,21 +60,27 @@ const SummaryScreen = () => {
               {index + 1}
             </div>
             
-            <img 
-              src={location.image}
+            <LazyImage 
+              src={location.src}
+              webpSrc={location.webpSrc}
               alt={location.title}
               style={{
                 width: '100%',
                 height: '200px',
                 objectFit: 'cover',
+                objectPosition: location.title === 'Painting in the Park' ? 'center 15%' : 'center',
                 borderRadius: '15px',
                 marginBottom: '15px'
               }}
             />
             
-            <h3 style={{ color: '#333', fontSize: '18px', marginBottom: '10px', fontFamily: 'Arial, sans-serif' }}>
+            <h3 style={{ color: '#333', fontSize: '18px', marginBottom: '5px', fontFamily: 'Arial, sans-serif' }}>
               {location.title}
             </h3>
+            
+            <p style={{ color: '#ff6b9d', fontSize: '12px', marginBottom: '10px', fontWeight: '600', fontFamily: 'Arial, sans-serif' }}>
+              {location.date}
+            </p>
             
             <p style={{ color: '#666', fontSize: '14px', lineHeight: '1.5', fontFamily: 'Arial, sans-serif' }}>
               {location.description}
@@ -175,13 +184,15 @@ const SummaryScreen = () => {
               >
                 ✕
               </button>
-              <img
-                src={selectedMemory.image}
+              <LazyImage
+                src={selectedMemory.src}
+                webpSrc={selectedMemory.webpSrc}
                 alt={selectedMemory.title}
                 style={{
                   width: '100%',
                   height: '400px',
                   objectFit: 'cover',
+                  objectPosition: selectedMemory.title === 'Painting in the Park' ? 'center 15%' : 'center',
                   borderRadius: '20px 20px 0 0'
                 }}
               />
@@ -189,16 +200,27 @@ const SummaryScreen = () => {
                 <h2 style={{
                   fontSize: '2rem',
                   color: '#333',
-                  marginBottom: '1rem',
+                  marginBottom: '0.5rem',
                   fontFamily: 'Arial, sans-serif'
                 }}>
                   {selectedMemory.title}
                 </h2>
                 <p style={{
+                  fontSize: '1rem',
+                  color: '#ff6b9d',
+                  marginBottom: '1rem',
+                  fontWeight: '600',
+                  fontFamily: 'Arial, sans-serif'
+                }}>
+                  {selectedMemory.date}
+                </p>
+                <p style={{
                   fontSize: '1.2rem',
                   lineHeight: '1.8',
                   color: '#555',
-                  fontFamily: 'Arial, sans-serif'
+                  fontFamily: 'Arial, sans-serif',
+                  whiteSpace: 'pre-wrap',
+                  wordWrap: 'break-word'
                 }}>
                   {selectedMemory.description}
                 </p>

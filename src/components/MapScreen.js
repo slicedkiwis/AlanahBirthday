@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MusicPlayer from './MusicPlayer';
+import LazyImage from './LazyImage';
 import { imageLocations } from '../utils/imageMetadata';
+import { usePerformance } from '../hooks/usePerformance';
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
 
 const MapScreen = () => {
+  usePerformance('MapScreen');
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
@@ -12,7 +16,37 @@ const MapScreen = () => {
   const [memories, setMemories] = useState([]);
   const [completedMemories, setCompletedMemories] = useState([]);
   const [markers, setMarkers] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMapLoading, setIsMapLoading] = useState(true);
   const markersRef = useRef([]);
+  
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  // Load Google Maps API
+  useEffect(() => {
+    const loadGoogleMaps = () => {
+      if (window.google) {
+        setIsMapLoading(false);
+        return;
+      }
+      
+      const script = document.createElement('script');
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDTyBgvYaBVGYJR0jZixVMJf-kbbHaIuFs&libraries=places';
+      script.async = true;
+      script.onload = () => setIsMapLoading(false);
+      script.onerror = () => {
+        console.error('Failed to load Google Maps');
+        setIsMapLoading(false);
+      };
+      document.head.appendChild(script);
+    };
+    
+    loadGoogleMaps();
+  }, []);
   
   // Convert imageLocations to memory format
   useEffect(() => {
@@ -20,7 +54,8 @@ const MapScreen = () => {
       id: index + 1,
       title: location.title,
       description: location.description,
-      image: location.image,
+      src: location.src,
+      webpSrc: location.webpSrc,
       location: location.coordinates,
       color: '#ff6b9d',
       date: location.date,
@@ -40,7 +75,7 @@ const MapScreen = () => {
   };
 
   useEffect(() => {
-    if (window.google && mapRef.current && memories.length > 0 && !map) {
+    if (!isMapLoading && window.google && mapRef.current && memories.length > 0 && !map) {
       const mapInstance = new window.google.maps.Map(mapRef.current, {
         center: memories[0].location,
         zoom: 8,
@@ -94,7 +129,7 @@ const MapScreen = () => {
       setMarkers(newMarkers);
       setMap(mapInstance);
     }
-  }, [memories, map]);
+  }, [memories, map, isMapLoading]);
   
   // Update marker colors when completedMemories changes
   useEffect(() => {
@@ -121,21 +156,55 @@ const MapScreen = () => {
   }, [completedMemories, memories.length, navigate]);
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div style={{ 
+      display: 'flex', 
+      height: '100vh',
+      flexDirection: isMobile ? 'column' : 'row'
+    }}>
       <MusicPlayer />
       
-      <div style={{ flex: 1 }}>
-        <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+      <div style={{ 
+        flex: 1,
+        minHeight: isMobile ? '50vh' : '100vh',
+        position: 'relative'
+      }}>
+        {isMapLoading ? (
+          <div style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#f5f5f5'
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                border: '4px solid #f3f3f3',
+                borderTop: '4px solid #ff6b9d',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite',
+                margin: '0 auto 1rem'
+              }} />
+              <p style={{ color: '#666', fontSize: '1rem' }}>Loading map...</p>
+            </div>
+          </div>
+        ) : (
+          <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+        )}
       </div>
 
       <div style={{
-        width: '500px',
+        width: isMobile ? '100%' : '30vw',
+        maxWidth: isMobile ? 'none' : '35rem',
         background: 'rgba(255, 255, 255, 0.98)',
-        backdropFilter: 'blur(20px)',
-        padding: '2rem',
+        backdropFilter: 'blur(1.25rem)',
+        padding: isMobile ? '1rem' : '2rem',
         overflowY: 'auto',
-        boxShadow: '-5px 0 20px rgba(0, 0, 0, 0.15)',
-        zIndex: 10
+        boxShadow: isMobile ? '0 -0.3rem 1.25rem rgba(0, 0, 0, 0.15)' : '-0.3rem 0 1.25rem rgba(0, 0, 0, 0.15)',
+        zIndex: 10,
+        maxHeight: isMobile ? '50vh' : '100vh'
       }}>
         <div style={{
           marginBottom: '2rem',
@@ -184,17 +253,17 @@ const MapScreen = () => {
                   position: 'relative'
                 }}>
                   <div style={{
-                    width: '50px',
-                    height: '50px',
+                    width: '3rem',
+                    height: '3rem',
                     borderRadius: '50%',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                     background: isCompleted ? '#ff6b9d' : '#ccc',
                     color: 'white',
-                    fontSize: '18px',
+                    fontSize: '1.125rem',
                     fontWeight: 'bold',
-                    boxShadow: isCompleted ? '0 0 20px rgba(255, 107, 157, 0.5)' : 'none',
+                    boxShadow: isCompleted ? '0 0 1.25rem rgba(255, 107, 157, 0.5)' : 'none',
                     zIndex: 2,
                     flexShrink: 0
                   }}>
@@ -202,11 +271,11 @@ const MapScreen = () => {
                   </div>
                   {index < memories.length - 1 && (
                     <div style={{
-                      width: '2px',
+                      width: '0.125rem',
                       flex: 1,
                       background: isCompleted ? 'linear-gradient(to bottom, #ff6b9d, #c44569)' : '#e0e0e0',
                       marginTop: '0.5rem',
-                      minHeight: '30px',
+                      minHeight: '2rem',
                       transition: 'all 0.3s ease'
                     }} />
                   )}
@@ -219,21 +288,23 @@ const MapScreen = () => {
                   alignItems: 'center'
                 }}>
                   <div style={{
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: '10px',
+                    width: '5rem',
+                    height: '5rem',
+                    borderRadius: '0.625rem',
                     overflow: 'hidden',
                     flexShrink: 0,
                     opacity: isCompleted ? 1 : 0.3,
                     filter: isCompleted ? 'none' : 'grayscale(100%)'
                   }}>
-                    <img 
-                      src={memory.image}
+                    <LazyImage 
+                      src={memory.src}
+                      webpSrc={memory.webpSrc}
                       alt={memory.title}
                       style={{
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover'
+                        objectFit: 'cover',
+                        objectPosition: memory.title === 'Painting in the Park' ? 'center 15%' : 'center'
                       }}
                     />
                   </div>
@@ -244,9 +315,8 @@ const MapScreen = () => {
                       fontWeight: '600',
                       color: '#333',
                       marginBottom: '0.25rem',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
+                      wordWrap: 'break-word',
+                      lineHeight: '1.3',
                       fontFamily: 'Arial, sans-serif'
                     }}>
                       {memory.title}
@@ -259,6 +329,17 @@ const MapScreen = () => {
                     }}>
                       {memory.date}
                     </p>
+                    {isCompleted && (
+                      <p style={{
+                        fontSize: '0.8rem',
+                        color: '#666',
+                        marginBottom: '0.5rem',
+                        fontFamily: 'Arial, sans-serif',
+                        lineHeight: '1.4'
+                      }}>
+                        {memory.description}
+                      </p>
+                    )}
                     {isCompleted && (
                       <div style={{
                         display: 'inline-block',
@@ -298,46 +379,52 @@ const MapScreen = () => {
           </div>
         )}
 
-        {selectedLocation && (
-          <div style={{
+      </div>
+      
+      {selectedLocation && (
+        <div 
+          onClick={() => setSelectedLocation(null)}
+          style={{
             position: 'fixed',
             top: '0',
             left: '0',
-            width: '100%',
+            width: '100vw',
             height: '100vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             zIndex: 1000,
             padding: '1rem',
-            pointerEvents: 'none'
+            background: 'rgba(0, 0, 0, 0.5)'
           }}>
-            <div style={{
-              background: 'white',
-              borderRadius: '20px',
-              maxWidth: '500px',
-              width: '100%',
-              maxHeight: '90vh',
-              overflow: 'hidden',
-              position: 'relative',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-              borderTop: '5px solid #ff6b9d',
-              pointerEvents: 'auto',
-              animation: 'slideIn 0.3s ease-out'
-            }}>
+            <div 
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'white',
+                borderRadius: '1.25rem',
+                maxWidth: '40vw',
+                width: '100%',
+                maxHeight: '85vh',
+                overflowY: 'auto',
+                position: 'relative',
+                boxShadow: '0 1.25rem 3.75rem rgba(0, 0, 0, 0.3)',
+                borderTop: '0.3rem solid #ff6b9d'
+              }}>
               <div style={{
                 position: 'relative',
                 width: '100%',
-                height: '250px',
+                height: '40vh',
                 overflow: 'hidden'
               }}>
-                <img 
-                  src={selectedLocation.image}
+                <LazyImage 
+                  src={selectedLocation.src}
+                  webpSrc={selectedLocation.webpSrc}
                   alt={selectedLocation.title}
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover'
+                    objectFit: 'cover',
+                    objectPosition: selectedLocation.title === 'Painting in the Park' ? 'center 15%' : 'center'
                   }}
                 />
                 <button 
@@ -349,15 +436,16 @@ const MapScreen = () => {
                     background: 'rgba(255, 255, 255, 0.9)',
                     border: 'none',
                     borderRadius: '50%',
-                    width: '40px',
-                    height: '40px',
+                    width: '2.5rem',
+                    height: '2.5rem',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                     cursor: 'pointer',
                     zIndex: 10,
                     transition: 'all 0.3s ease',
-                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+                    boxShadow: '0 0.125rem 0.625rem rgba(0, 0, 0, 0.1)',
+                    fontSize: '1.5rem'
                   }}
                 >
                   ✕
@@ -368,24 +456,34 @@ const MapScreen = () => {
                   fontFamily: 'Arial, sans-serif',
                   fontSize: '2rem',
                   color: '#333',
-                  marginBottom: '1rem'
+                  marginBottom: '0.5rem'
                 }}>
                   {selectedLocation.title}
                 </h3>
                 <p style={{ 
                   fontSize: '1rem',
+                  color: '#ff6b9d',
+                  marginBottom: '1rem',
+                  fontWeight: '600',
+                  fontFamily: 'Arial, sans-serif'
+                }}>
+                  {selectedLocation.date}
+                </p>
+                <p style={{ 
+                  fontSize: '1rem',
                   lineHeight: '1.6',
                   color: '#555',
                   marginBottom: '1.5rem',
-                  fontFamily: 'Arial, sans-serif'
+                  fontFamily: 'Arial, sans-serif',
+                  whiteSpace: 'pre-wrap',
+                  wordWrap: 'break-word'
                 }}>
                   {selectedLocation.description}
                 </p>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

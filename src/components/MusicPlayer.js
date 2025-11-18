@@ -30,7 +30,11 @@ const MusicPlayer = () => {
 
   return (
     <>
-      <audio ref={audioRef} src={process.env.PUBLIC_URL + '/static/chopin-nocturne-op9-no2.mp3.mp3'} />
+      <audio 
+        ref={audioRef} 
+        src={process.env.PUBLIC_URL + '/static/chopin-nocturne-op9-no2.mp3.mp3'}
+        preload="metadata"
+      />
       
       {showPlayer ? (
         <div style={{

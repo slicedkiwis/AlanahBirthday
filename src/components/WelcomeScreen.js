@@ -29,7 +29,7 @@ const WelcomeScreen = () => {
           margin: '0',
           lineHeight: '1.6'
         }}>
-          Get ready to relive all our beautiful moments together through the places that made our love story special ✨
+          Get ready to relive some of our beautiful moments together through the places that made our love story special ✨
         </p>
       </div>
       

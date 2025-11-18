@@ -12,7 +12,10 @@ const HeartAnimation = () => {
         animationDelay: Math.random() * 2
       };
       
-      setHearts(prev => [...prev, heart]);
+      setHearts(prev => {
+        const newHearts = [...prev, heart];
+        return newHearts.length > 10 ? newHearts.slice(-10) : newHearts;
+      });
       
       setTimeout(() => {
         setHearts(prev => prev.filter(h => h.id !== heart.id));
