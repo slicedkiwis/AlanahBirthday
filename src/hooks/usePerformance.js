@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+/*import { useEffect } from 'react';
 
 export const usePerformance = (componentName) => {
   useEffect(() => {
@@ -20,4 +20,4 @@ export const logImageLoad = (imageName, startTime) => {
   if (loadTime > 500) {
     console.log(`Slow image load - ${imageName}: ${loadTime.toFixed(2)}ms`);
   }
-};
+};*/
