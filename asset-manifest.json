@@ -1,26 +1,21 @@
 {
   "files": {
-    "main.css": "/AlanahBirthday/static/css/main.7bcd8ad3.css",
-    "main.js": "/AlanahBirthday/static/js/main.6337ffec.js",
-    "static/media/Painting-park.jpeg": "/AlanahBirthday/static/media/Painting-park.03f680cc1ba7211fbe9e.jpeg",
-    "static/media/when-i-asked-you-to-be-my-girlfriend.jpeg": "/AlanahBirthday/static/media/when-i-asked-you-to-be-my-girlfriend.96079f47dbeb72a6c6e4.jpeg",
-    "static/media/First-trip-panama.jpeg": "/AlanahBirthday/static/media/First-trip-panama.ee7b8795d883f52e2bff.jpeg",
-    "static/media/jacksonville-lock.jpeg": "/AlanahBirthday/static/media/jacksonville-lock.6d18ae862bc34a6bfef3.jpeg",
-    "static/media/escaperoom.jpeg": "/AlanahBirthday/static/media/escaperoom.0cb62bcdb81a21266c34.jpeg",
-    "static/media/Panama-wine-tasting.jpeg": "/AlanahBirthday/static/media/Panama-wine-tasting.4912eb94e4329fe9dd72.jpeg",
-    "static/media/Birthday-trip.jpeg": "/AlanahBirthday/static/media/Birthday-trip.e1f6c2f74991743f24d9.jpeg",
-    "static/media/Jacksonville.jpeg": "/AlanahBirthday/static/media/Jacksonville.b50f4ed302a5ff6b13d2.jpeg",
-    "static/media/Apartment.jpeg": "/AlanahBirthday/static/media/Apartment.26962f444955a5457138.jpeg",
-    "static/media/myroom.jpeg": "/AlanahBirthday/static/media/myroom.111e9442123a285dad55.jpeg",
-    "static/media/Beach-trip.jpeg": "/AlanahBirthday/static/media/Beach-trip.97a2b12e84dd54bbecc6.jpeg",
-    "static/media/konmpa-and-line-dancing-at-ARJs.jpeg": "/AlanahBirthday/static/media/konmpa-and-line-dancing-at-ARJs.af113781afd3bd2033fd.jpeg",
-    "static/media/4Kanpe-the-whole-night.jpeg": "/AlanahBirthday/static/media/4Kanpe-the-whole-night.80322a2c0b60de8509a3.jpeg",
-    "index.html": "/AlanahBirthday/index.html",
-    "main.7bcd8ad3.css.map": "/AlanahBirthday/static/css/main.7bcd8ad3.css.map",
-    "main.6337ffec.js.map": "/AlanahBirthday/static/js/main.6337ffec.js.map"
+    "main.css": "/static/css/main.1ed9daf9.css",
+    "main.js": "/static/js/main.a54241bd.js",
+    "static/js/537.5d38bd0d.chunk.js": "/static/js/537.5d38bd0d.chunk.js",
+    "static/js/618.b9563d93.chunk.js": "/static/js/618.b9563d93.chunk.js",
+    "static/js/201.196d7211.chunk.js": "/static/js/201.196d7211.chunk.js",
+    "static/js/705.133ee2cc.chunk.js": "/static/js/705.133ee2cc.chunk.js",
+    "index.html": "/index.html",
+    "main.1ed9daf9.css.map": "/static/css/main.1ed9daf9.css.map",
+    "main.a54241bd.js.map": "/static/js/main.a54241bd.js.map",
+    "537.5d38bd0d.chunk.js.map": "/static/js/537.5d38bd0d.chunk.js.map",
+    "618.b9563d93.chunk.js.map": "/static/js/618.b9563d93.chunk.js.map",
+    "201.196d7211.chunk.js.map": "/static/js/201.196d7211.chunk.js.map",
+    "705.133ee2cc.chunk.js.map": "/static/js/705.133ee2cc.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7bcd8ad3.css",
-    "static/js/main.6337ffec.js"
+    "static/css/main.1ed9daf9.css",
+    "static/js/main.a54241bd.js"
   ]
 }
