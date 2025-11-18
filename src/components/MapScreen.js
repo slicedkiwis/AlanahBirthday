@@ -7,7 +7,6 @@ import { usePerformance } from '../hooks/usePerformance';
 import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
 
 const MapScreen = () => {
-  usePerformance('MapScreen');
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
